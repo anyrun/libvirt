@@ -114,7 +114,7 @@
 #include "virsocket.h"
 #include "virutil.h"
 
-#include <iostream>
+#include <stdio.h>
 
 #define VIR_FROM_THIS VIR_FROM_QEMU
 
@@ -13462,7 +13462,7 @@ static char *
 qemuDomainSnapshotGetXMLDesc(virDomainSnapshotPtr snapshot,
                              unsigned int flags)
 {
-    std::cout << "qemuDomainSnapshotGetXMLDesc qemuDomainSnapshotGetXMLDesc" << std::endl;
+    printf("qemuDomainSnapshotGetXMLDesc qemuDomainSnapshotGetXMLDesc");
     if (!snapshot || !snapshot->domain || !snapshot->domain->conn || 
         !snapshot->domain->conn->privateData) {
         return NULL;
@@ -13475,27 +13475,28 @@ qemuDomainSnapshotGetXMLDesc(virDomainSnapshotPtr snapshot,
 
     virCheckFlags(VIR_DOMAIN_SNAPSHOT_XML_SECURE, NULL);
 
-    std::cout << "qemuDomainSnapshotGetXMLDesc qemuDomObjFromSnapshot" << std::endl;
+    printf("qemuDomainSnapshotGetXMLDesc qemuDomObjFromSnapshot");
     if (!(vm = qemuDomObjFromSnapshot(snapshot)))
         return NULL;
 
-    std::cout << "qemuDomainSnapshotGetXMLDesc virDomainSnapshotGetXMLDescEnsureACL" << std::endl;
+    printf("qemuDomainSnapshotGetXMLDesc virDomainSnapshotGetXMLDescEnsureACL");
     if (virDomainSnapshotGetXMLDescEnsureACL(snapshot->domain->conn, vm->def, flags) < 0)
         goto cleanup;
 
-    std::cout << "qemuDomainSnapshotGetXMLDesc qemuSnapObjFromSnapshot" << std::endl;
+    printf("qemuDomainSnapshotGetXMLDesc qemuSnapObjFromSnapshot");
     if (!(snap = qemuSnapObjFromSnapshot(vm, snapshot)))
         goto cleanup;
 
-    std::cout << "qemuDomainSnapshotGetXMLDesc virUUIDFormat" << std::endl;
+
+    printf("qemuDomainSnapshotGetXMLDesc virUUIDFormat");
     virUUIDFormat(snapshot->domain->uuid, uuidstr);
 
-    std::cout << "qemuDomainSnapshotGetXMLDesc virDomainSnapshotDefFormat" << std::endl;
+    printf("qemuDomainSnapshotGetXMLDesc virDomainSnapshotDefFormat");
     xml = virDomainSnapshotDefFormat(uuidstr, virDomainSnapshotObjGetDef(snap),
                                      driver->xmlopt,
                                      virDomainSnapshotFormatConvertXMLFlags(flags));
 
-    std::cout << "qemuDomainSnapshotGetXMLDesc cleanup" << std::endl;
+    printf("qemuDomainSnapshotGetXMLDesc cleanup");
  cleanup:
     virDomainObjEndAPI(&vm);
     return xml;
